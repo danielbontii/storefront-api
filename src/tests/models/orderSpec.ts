@@ -1,7 +1,14 @@
+import supertest = require('supertest');
+
 import { OrderStore } from '../../models/Order';
 import { ProductStore } from '../../models/Product';
 import { UserStore } from '../../models/User';
 import { Order } from '../../types/order';
+import app from '../../server';
+
+const userPassword = 'User@123';
+
+const req = supertest(app);
 
 describe('OrderStore should have ', () => {
   it('create method', () => {
@@ -233,5 +240,141 @@ describe('OrderStore should', () => {
     const result = await OrderStore.completedOrdersByUser(compUser.id);
 
     expect(result).toEqual([completedOrderFive]);
+  });
+});
+
+describe('order route should send status code', () => {
+  it('200 if completed orders route is accessed', async () => {
+    const user = await UserStore.create({
+      firstName: 'George',
+      lastName: 'Bush',
+      password: userPassword
+    });
+    const res = await req.get(`/orders/${user.id}/complete`);
+    expect(res.statusCode).toBe(200);
+  });
+  it('200 if active orders route is accessed', async () => {
+    const user = await UserStore.create({
+      firstName: 'John',
+      lastName: 'Bush',
+      password: userPassword
+    });
+    const res = await req.get(`/orders/${user.id}/active`);
+    expect(res.statusCode).toBe(200);
+  });
+  it('201 if create order route is accessed', async () => {
+    const user = await UserStore.create({
+      firstName: 'John',
+      lastName: 'Stone',
+      password: userPassword
+    });
+
+    const product = await ProductStore.create({
+      name: 'Curtain',
+      price: '7.99',
+      category: 'Houses'
+    });
+    const res = await req.post(`/orders`).send({
+      userId: user.id,
+      productId: product.id,
+      quantity: 5
+    });
+    expect(res.statusCode).toBe(201);
+  });
+  it('201 if create multiple orders route is accessed', async () => {
+    const user = await UserStore.create({
+      firstName: 'John',
+      lastName: 'Washington',
+      password: userPassword
+    });
+
+    const product = await ProductStore.create({
+      name: 'Leather wallet',
+      price: '15.99',
+      category: 'Wallets'
+    });
+    const res = await req.post(`/orders`).send([
+      {
+        userId: user.id,
+        productId: product.id,
+        quantity: 5
+      },
+      {
+        userId: user.id,
+        productId: product.id,
+        quantity: 12
+      }
+    ]);
+    expect(res.statusCode).toBe(201);
+  });
+  it('200 if complete order route is accessed', async () => {
+    const user = await UserStore.create({
+      firstName: 'John',
+      lastName: 'Washington',
+      password: userPassword
+    });
+
+    const product = await ProductStore.create({
+      name: 'Leather Purse',
+      price: '13.99',
+      category: 'Purses'
+    });
+
+    const order = (await OrderStore.create({
+      productId: product.id,
+      quantity: 3,
+      userId: user.id
+    })) as Order;
+    const res = await req.post(`/orders/complete-order`).send({
+      userId: user.id,
+      productId: product.id,
+      orderId: order.id
+    });
+    expect(res.statusCode).toBe(200);
+  });
+  it('200 if complete multiple orders route is accessed', async () => {
+    const user = await UserStore.create({
+      firstName: 'John',
+      lastName: 'Doe',
+      password: userPassword
+    });
+
+    const product = await ProductStore.create({
+      name: 'Leather Hat',
+      price: '13.99',
+      category: 'Hats'
+    });
+
+    const productTwo = await ProductStore.create({
+      name: 'Wooden Carpet',
+      price: '103.99',
+      category: 'carperts'
+    });
+
+    const order = (await OrderStore.create({
+      productId: product.id,
+      quantity: 3,
+      userId: user.id
+    })) as Order;
+
+    const orderTwo = (await OrderStore.create({
+      productId: productTwo.id,
+      quantity: 15,
+      userId: user.id
+    })) as Order;
+
+    const res = await req.post(`/orders/complete-order`).send([
+      {
+        userId: user.id,
+        productId: product.id,
+        orderId: order.id
+      },
+      {
+        userId: user.id,
+        productId: productTwo.id,
+        orderId: orderTwo.id
+      }
+    ]);
+    expect(res.statusCode).toBe(200);
   });
 });

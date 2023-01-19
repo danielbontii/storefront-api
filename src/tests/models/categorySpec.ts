@@ -33,7 +33,7 @@ describe('Category store index method', () => {
   });
 });
 
-fdescribe('Category store create method', () => {
+describe('Category store create method', () => {
   it('should create category given a valid name', async () => {
     const category = await CategoryStore.create('Electronics');
     expect(category).toEqual({
