@@ -1,4 +1,8 @@
+import path from 'path';
+import fs from 'fs';
+
 import { Pool } from 'pg';
+
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -32,4 +36,39 @@ if (ENV === 'dev') {
   });
 }
 
+const createDbIfNotExists = async (database: string): Promise<void> => {
+  const conn = await client.connect();
+  const db = await conn.query(
+    `SELECT FROM pg_database WHERE datname = '${database}'`
+  );
+  if (db.rowCount <= 0) {
+    await conn.query(`CREATE DATABASE ${database}`);
+  }
+};
+
+const initDb = async (): Promise<void> => {
+  const DEV_DB = process.env.DEV_DB || 'postgres';
+  const { TEST_DB } = process.env;
+  console.log(DEV_DB, TEST_DB);
+
+  const conn = await client.connect();
+
+  createDbIfNotExists(DEV_DB);
+
+  const migrationsPath = path.join(__dirname, '../migrations/sqls');
+  const migrations = fs.readdirSync(migrationsPath);
+  for (const migration of migrations) {
+    const filePath = `${migrationsPath}/${migration}`;
+    if (path.basename(filePath).split('-').includes('up.sql')) {
+      const sql = fs.readFileSync(filePath).toString();
+      console.log(sql);
+      await client.query(sql);
+    }
+  }
+
+  createDbIfNotExists(TEST_DB as string);
+  conn.release();
+};
+
+export  { initDb };
 export default client;
