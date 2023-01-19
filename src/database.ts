@@ -61,7 +61,6 @@ const initDb = async (): Promise<void> => {
     const filePath = `${migrationsPath}/${migration}`;
     if (path.basename(filePath).split('-').includes('up.sql')) {
       const sql = fs.readFileSync(filePath).toString();
-      // console.log(sql);
       await client.query(sql);
     }
   }
