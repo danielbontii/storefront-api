@@ -6,7 +6,6 @@ import {
   getInvalidDetailsError,
   getInvalidIdError
 } from '../../utils/get-errors';
-import { UserRepository } from '../../repositories/UserRepository';
 import { truncateTable } from '../../utils/dbUtils';
 
 const userPassword = 'User@123';

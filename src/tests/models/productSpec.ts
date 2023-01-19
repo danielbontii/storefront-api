@@ -1,6 +1,5 @@
 import { CategoryStore } from '../../models/Category';
 import { ProductStore } from '../../models/Product';
-import { ProductRepository } from '../../repositories/ProductRepository';
 import { truncateTable } from '../../utils/dbUtils';
 
 describe('Product Store should have', () => {

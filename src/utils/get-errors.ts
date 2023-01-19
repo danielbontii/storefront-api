@@ -1,3 +1,4 @@
+import { Category } from '../types/category';
 import { User, UserDetails } from '../types/user';
 
 const getInvalidDetailsError = async (
@@ -45,8 +46,24 @@ const getInvalidAuthPasswordError = (
   return error;
 };
 
+const getCategoryError = async (
+  fn: (category: string) => Promise<Category>,
+  name: string
+): Promise<unknown> => {
+  let error;
+
+  try {
+    await fn(name);
+  } catch (e) {
+    error = e;
+  }
+
+  return error;
+};
+
 export {
   getInvalidDetailsError,
   getInvalidAuthPasswordError,
-  getInvalidIdError
+  getInvalidIdError,
+  getCategoryError
 };
