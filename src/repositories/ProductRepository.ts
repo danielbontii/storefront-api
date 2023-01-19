@@ -115,9 +115,4 @@ export class ProductRepository {
     return false;
   }
 
-  static async truncate(): Promise<void> {
-    const conn = await client.connect();
-    await conn.query('TRUNCATE products CASCADE');
-    conn.release();
-  }
 }

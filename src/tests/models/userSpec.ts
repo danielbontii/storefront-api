@@ -7,6 +7,7 @@ import {
   getInvalidIdError
 } from '../../utils/get-errors';
 import { UserRepository } from '../../repositories/UserRepository';
+import { truncateTable } from '../../utils/dbUtils';
 
 const userPassword = 'User@123';
 
@@ -24,12 +25,12 @@ describe('User store', () => {
 
 describe('Userstore index method', () => {
   it('should be empty to start with', async () => {
-    await UserRepository.truncate();
+    await truncateTable('users');
     expect(await UserStore.index()).toEqual([]);
   });
 
   it('should contain all created users', async () => {
-    await UserRepository.truncate();
+    await truncateTable('users');
     const firstUser = await UserStore.create({
       firstName: 'Micheal',
       lastName: 'Lopez',

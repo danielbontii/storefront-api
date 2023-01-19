@@ -46,9 +46,4 @@ export class UserRepository {
     return result.rows[0];
   }
 
-  static async truncate(): Promise<void> {
-    const conn = await client.connect();
-    await conn.query('TRUNCATE users CASCADE');
-    conn.release();
-  }
 }

@@ -1,6 +1,7 @@
 import { CategoryStore } from '../../models/Category';
 import { ProductStore } from '../../models/Product';
 import { ProductRepository } from '../../repositories/ProductRepository';
+import { truncateTable } from '../../utils/dbUtils';
 
 describe('Product Store should have', () => {
   it('an index method', () => {
@@ -91,7 +92,7 @@ describe('Product Store ', () => {
   });
 
   it('should show all products', async () => {
-    await ProductRepository.truncate();
+    await truncateTable('products');
 
     //For some weird reason I don't know
     //it doesn't come back in the order of insersion

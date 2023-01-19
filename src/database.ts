@@ -54,7 +54,6 @@ const initDb = async (): Promise<void> => {
   createDbIfNotExists(DEV_DB);
   const conn = await client.connect();
 
-
   const migrationsPath = path.join(__dirname, '../migrations/sqls');
   const migrations = fs.readdirSync(migrationsPath);
   for (const migration of migrations) {
