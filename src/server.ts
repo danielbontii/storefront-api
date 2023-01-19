@@ -7,6 +7,7 @@ import productRoutes from './handlers/productRoutes';
 import orderRoutes from './handlers/orderRoutes';
 import authRoutes from './handlers/authRoutes';
 import { initDb } from './database';
+import notFoundMiddleWare from './middleware/not-found';
 
 const app: express.Application = express();
 const address = '0.0.0.0:3000';
@@ -35,5 +36,6 @@ orderRoutes(app);
 authRoutes(app);
 
 app.use(errorHandlerMiddleware);
+app.use(notFoundMiddleWare)
 
 export default app;

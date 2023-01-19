@@ -51,9 +51,9 @@ const initDb = async (): Promise<void> => {
   const { TEST_DB } = process.env;
   console.log(DEV_DB, TEST_DB);
 
+  createDbIfNotExists(DEV_DB);
   const conn = await client.connect();
 
-  createDbIfNotExists(DEV_DB);
 
   const migrationsPath = path.join(__dirname, '../migrations/sqls');
   const migrations = fs.readdirSync(migrationsPath);
@@ -61,13 +61,13 @@ const initDb = async (): Promise<void> => {
     const filePath = `${migrationsPath}/${migration}`;
     if (path.basename(filePath).split('-').includes('up.sql')) {
       const sql = fs.readFileSync(filePath).toString();
-      console.log(sql);
+      // console.log(sql);
       await client.query(sql);
     }
   }
 
-  createDbIfNotExists(TEST_DB as string);
   conn.release();
+  createDbIfNotExists(TEST_DB as string);
 };
 
 export  { initDb };
