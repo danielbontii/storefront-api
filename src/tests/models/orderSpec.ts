@@ -5,7 +5,7 @@ import { ProductStore } from '../../models/Product';
 import { UserStore } from '../../models/User';
 import { Order } from '../../types/order';
 import app from '../../server';
-import { TEST_USER_PASSWORD } from '../../utils/constants';
+import { TEST_USER_PASSWORD, API_BASE_URL } from '../../utils/constants';
 
 const req = supertest(app);
 
@@ -249,7 +249,7 @@ describe('order route should send status code', () => {
       lastName: 'Bush',
       password: TEST_USER_PASSWORD
     });
-    const res = await req.get(`/orders/${user.id}/complete`);
+    const res = await req.get(`${API_BASE_URL}/orders/${user.id}/complete`);
     expect(res.statusCode).toBe(200);
   });
   it('200 if active orders route is accessed', async () => {
@@ -258,7 +258,7 @@ describe('order route should send status code', () => {
       lastName: 'Bush',
       password: TEST_USER_PASSWORD
     });
-    const res = await req.get(`/orders/${user.id}/active`);
+    const res = await req.get(`${API_BASE_URL}/orders/${user.id}/active`);
     expect(res.statusCode).toBe(200);
   });
   it('201 if create order route is accessed', async () => {
@@ -273,7 +273,7 @@ describe('order route should send status code', () => {
       price: '7.99',
       category: 'Houses'
     });
-    const res = await req.post(`/orders`).send({
+    const res = await req.post(`${API_BASE_URL}/orders`).send({
       userId: user.id,
       productId: product.id,
       quantity: 5
@@ -292,7 +292,7 @@ describe('order route should send status code', () => {
       price: '15.99',
       category: 'Wallets'
     });
-    const res = await req.post(`/orders`).send([
+    const res = await req.post(`${API_BASE_URL}/orders`).send([
       {
         userId: user.id,
         productId: product.id,
@@ -324,7 +324,7 @@ describe('order route should send status code', () => {
       quantity: 3,
       userId: user.id
     })) as Order;
-    const res = await req.post(`/orders/complete-order`).send({
+    const res = await req.post(`${API_BASE_URL}/orders/complete-order`).send({
       userId: user.id,
       productId: product.id,
       orderId: order.id
@@ -362,7 +362,7 @@ describe('order route should send status code', () => {
       userId: user.id
     })) as Order;
 
-    const res = await req.post(`/orders/complete-order`).send([
+    const res = await req.post(`${API_BASE_URL}/orders/complete-order`).send([
       {
         userId: user.id,
         productId: product.id,

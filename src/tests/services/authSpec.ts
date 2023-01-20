@@ -3,6 +3,7 @@ const { ADMIN_PASSWORD } = process.env;
 import { getInvalidAuthPasswordError } from '../../utils/get-errors';
 import { UnauthenticatedError } from '../../errors';
 import { UserStore } from '../../models/User';
+import { API_BASE_URL } from '../../utils/constants';
 
 const userPassword = 'User@123';
 
@@ -42,7 +43,7 @@ describe('Auth service', () => {
 
 describe('Auth middleware should return status 401 if password is token is absent', () => {
   it('when accessing show all users route', async () => {
-    const res = await req.get('/users');
+    const res = await req.get(`${API_BASE_URL}/users`);
     expect(res.statusCode).toEqual(401);
   });
 
@@ -52,13 +53,13 @@ describe('Auth middleware should return status 401 if password is token is absen
       lastName: 'Waller',
       password: userPassword
     });
-    const res = await req.get(`/users/${user.id}`);
+    const res = await req.get(`${API_BASE_URL}/users/${user.id}`);
     expect(res.statusCode).toEqual(401);
   });
 
   it('when accessing create user route', async () => {
     const res = await req
-      .post('/users')
+      .post(`${API_BASE_URL}/users`)
       .send({ firstName: 'John', lastName: 'Doe', password: userPassword });
     expect(res.statusCode).toEqual(401);
   });
@@ -67,7 +68,7 @@ describe('Auth middleware should return status 401 if password is token is absen
 describe('Auth middleware should return status 200 if token is present', () => {
   it('when accessing show all users route', async () => {
     const res = await req
-      .get('/users')
+      .get(`${API_BASE_URL}/users`)
       .set({ authorization: `Bearer ${token}` });
     expect(res.statusCode).toEqual(200);
   });
@@ -80,14 +81,14 @@ describe('Auth middleware should return status 200 if token is present', () => {
     });
 
     const res = await req
-      .get(`/users/${user.id}`)
+      .get(`${API_BASE_URL}/users/${user.id}`)
       .set({ authorization: `Bearer ${token}` });
     expect(res.statusCode).toEqual(200);
   });
 
   it('when accessing create user route', async () => {
     const res = await req
-      .post('/users')
+      .post(`${API_BASE_URL}/users`)
       .set({ authorization: `Bearer ${token}` })
       .send({ firstName: 'John', lastName: 'Doe', password: userPassword });
     expect(res.statusCode).toEqual(201);

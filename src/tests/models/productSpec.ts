@@ -5,6 +5,7 @@ import { ProductStore } from '../../models/Product';
 import { truncateTable } from '../../utils/dbUtils';
 import app from '../../server';
 import { AuthService } from '../../services/Auth';
+import { API_BASE_URL } from '../../utils/constants';
 
 const req = supertest(app);
 const { ADMIN_PASSWORD } = process.env;
@@ -166,7 +167,7 @@ describe('Product Store ', () => {
 
 describe('products route should send status code', () => {
   it('200 if all products route is accessed', async () => {
-    const res = await req.get('/products');
+    const res = await req.get(`${API_BASE_URL}/products`);
     expect(res.statusCode).toBe(200);
   });
 
@@ -176,19 +177,21 @@ describe('products route should send status code', () => {
       price: '199.99',
       category: 'Luxury'
     });
-    const res = await req.get(`/products/${product.id}`);
+    const res = await req.get(`${API_BASE_URL}/products/${product.id}`);
     expect(res.statusCode).toBe(200);
   });
 
   it('200 if products by category route is accessed', async () => {
     const category = await CategoryStore.create('Freezers');
-    const res = await req.get(`/products/categories/${category.name}`);
+    const res = await req.get(
+      `${API_BASE_URL}/products/categories/${category.name}`
+    );
     expect(res.statusCode).toBe(200);
   });
 
   it('201 if product is created', async () => {
     const res = await req
-      .post('/products')
+      .post(`${API_BASE_URL}/products`)
       .set({ authorization: `Bearer ${token}` })
       .send({
         name: 'Curly hair',

@@ -6,6 +6,7 @@ import { CategoryStore } from '../../models/Category';
 import app from '../../server';
 import { getCategoryError } from '../../utils/get-errors';
 import { CustomError } from '../../errors';
+import { API_BASE_URL } from '../../utils/constants';
 
 const req = supertest(app);
 
@@ -62,17 +63,19 @@ describe('Category store create method', () => {
 
 describe('Create category route should send status code', () => {
   it('201 if category created', async () => {
-    const res = await req.post('/categories').send({ name: 'Fresh' });
+    const res = await req
+      .post(`${API_BASE_URL}/categories`)
+      .send({ name: 'Fresh' });
     expect(res.statusCode).toBe(201);
   });
   it('200 when all categories routes is accessed', async () => {
-    const res = await req.get('/categories');
+    const res = await req.get(`${API_BASE_URL}/categories`);
     expect(res.statusCode).toBe(200);
   });
   it('409 when category alreay exists', async () => {
-    await req.post('/categories').send({ name: 'Family' });
+    await req.post(`${API_BASE_URL}/categories`).send({ name: 'Family' });
     const conflictingRes = await req
-      .post('/categories')
+      .post(`${API_BASE_URL}/categories`)
       .send({ name: 'family' });
     expect(conflictingRes.statusCode).toBe(409);
   });

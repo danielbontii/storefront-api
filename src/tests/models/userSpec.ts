@@ -10,7 +10,7 @@ import {
 import { truncateTable } from '../../utils/dbUtils';
 import { AuthService } from '../../services/Auth';
 import app from '../../server';
-import { TEST_USER_PASSWORD } from '../../utils/constants';
+import { TEST_USER_PASSWORD, API_BASE_URL } from '../../utils/constants';
 
 const req = supertest(app);
 const { ADMIN_PASSWORD } = process.env;
@@ -296,7 +296,7 @@ describe('User store password check', () => {
 describe('users route should send status code', () => {
   it('200 if all products route is accessed', async () => {
     const res = await req
-      .get('/users')
+      .get(`${API_BASE_URL}/users`)
       .set({ authorization: `Bearer ${token}` });
     expect(res.statusCode).toBe(200);
   });
@@ -308,14 +308,14 @@ describe('users route should send status code', () => {
       password: TEST_USER_PASSWORD
     });
     const res = await req
-      .get(`/users/${user.id}`)
+      .get(`${API_BASE_URL}/users/${user.id}`)
       .set({ authorization: `Bearer ${token}` });
     expect(res.statusCode).toBe(200);
   });
 
   it('201 if user is created', async () => {
     const res = await req
-      .post('/users')
+      .post(`${API_BASE_URL}/users`)
       .set({ authorization: `Bearer ${token}` })
       .send({
         firstName: 'Sam',
