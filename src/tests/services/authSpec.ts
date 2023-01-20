@@ -1,11 +1,10 @@
-import { AuthService } from '../../services/Auth';
 const { ADMIN_PASSWORD } = process.env;
+
+import { AuthService } from '../../services/Auth';
 import { getInvalidAuthPasswordError } from '../../utils/get-errors';
 import { UnauthenticatedError } from '../../errors';
 import { UserStore } from '../../models/User';
-import { API_BASE_URL } from '../../utils/constants';
-
-const userPassword = 'User@123';
+import { API_BASE_URL, TEST_USER_PASSWORD } from '../../utils/constants';
 
 const token = AuthService.generateToken(ADMIN_PASSWORD as string);
 
@@ -51,7 +50,7 @@ describe('Auth middleware should return status 401 if password is token is absen
     const user = await UserStore.create({
       firstName: 'John',
       lastName: 'Waller',
-      password: userPassword
+      password: TEST_USER_PASSWORD
     });
     const res = await req.get(`${API_BASE_URL}/users/${user.id}`);
     expect(res.statusCode).toEqual(401);
@@ -60,7 +59,7 @@ describe('Auth middleware should return status 401 if password is token is absen
   it('when accessing create user route', async () => {
     const res = await req
       .post(`${API_BASE_URL}/users`)
-      .send({ firstName: 'John', lastName: 'Doe', password: userPassword });
+      .send({ firstName: 'John', lastName: 'Doe', password: TEST_USER_PASSWORD });
     expect(res.statusCode).toEqual(401);
   });
 });
@@ -77,7 +76,7 @@ describe('Auth middleware should return status 200 if token is present', () => {
     const user = await UserStore.create({
       firstName: 'Joseph',
       lastName: 'Scott',
-      password: userPassword
+      password: TEST_USER_PASSWORD
     });
 
     const res = await req
@@ -90,7 +89,7 @@ describe('Auth middleware should return status 200 if token is present', () => {
     const res = await req
       .post(`${API_BASE_URL}/users`)
       .set({ authorization: `Bearer ${token}` })
-      .send({ firstName: 'John', lastName: 'Doe', password: userPassword });
+      .send({ firstName: 'John', lastName: 'Doe', password: TEST_USER_PASSWORD });
     expect(res.statusCode).toEqual(201);
   });
 });
