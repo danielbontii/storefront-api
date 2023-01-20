@@ -1,6 +1,14 @@
+import supertest = require('supertest');
+
 import { CategoryStore } from '../../models/Category';
 import { ProductStore } from '../../models/Product';
 import { truncateTable } from '../../utils/dbUtils';
+import app from '../../server';
+import { AuthService } from '../../services/Auth';
+
+const req = supertest(app);
+const { ADMIN_PASSWORD } = process.env;
+const token = AuthService.generateToken(ADMIN_PASSWORD as string);
 
 describe('Product Store should have', () => {
   it('an index method', () => {
@@ -14,7 +22,7 @@ describe('Product Store should have', () => {
   it('a create method', () => {
     expect(ProductStore.create).toBeDefined();
   });
-  
+
   it('a productsByCategory method', () => {
     expect(ProductStore.productsByCategory).toBeDefined();
   });
@@ -153,5 +161,40 @@ describe('Product Store ', () => {
         categoryId: testProductTwo.categoryId
       }
     ]);
+  });
+});
+
+describe('products route should send status code', () => {
+  it('200 if all products route is accessed', async () => {
+    const res = await req.get('/products');
+    expect(res.statusCode).toBe(200);
+  });
+
+  it('200 if single product route is accessed', async () => {
+    const product = await ProductStore.create({
+      name: 'Massage chair',
+      price: '199.99',
+      category: 'Luxury'
+    });
+    const res = await req.get(`/products/${product.id}`);
+    expect(res.statusCode).toBe(200);
+  });
+
+  it('200 if products by category route is accessed', async () => {
+    const category = await CategoryStore.create('Freezers');
+    const res = await req.get(`/products/categories/${category.name}`);
+    expect(res.statusCode).toBe(200);
+  });
+
+  it('201 if product is created', async () => {
+    const res = await req
+      .post('/products')
+      .set({ authorization: `Bearer ${token}` })
+      .send({
+        name: 'Curly hair',
+        price: '45.99',
+        category: 'Fashion'
+      });
+    expect(res.statusCode).toBe(201);
   });
 });
