@@ -1,4 +1,5 @@
 import { ValidationError } from 'joi';
+import supertest = require('supertest');
 
 import { UserStore } from '../../models/User';
 import { BadRequestError } from '../../errors';
@@ -7,6 +8,12 @@ import {
   getInvalidIdError
 } from '../../utils/get-errors';
 import { truncateTable } from '../../utils/dbUtils';
+import { AuthService } from '../../services/Auth';
+import app from '../../server';
+
+const req = supertest(app);
+const { ADMIN_PASSWORD } = process.env;
+const token = AuthService.generateToken(ADMIN_PASSWORD as string);
 
 const userPassword = 'User@123';
 
@@ -284,5 +291,38 @@ describe('User store password check', () => {
     user.password = 'ASDER8632@#';
     const error = await getInvalidDetailsError(UserStore.create, user);
     expect(error).toBeInstanceOf(ValidationError);
+  });
+});
+
+describe('users route should send status code', () => {
+  it('200 if all products route is accessed', async () => {
+    const res = await req
+      .get('/users')
+      .set({ authorization: `Bearer ${token}` });
+    expect(res.statusCode).toBe(200);
+  });
+
+  it('200 if single user route is accessed', async () => {
+    const user = await UserStore.create({
+      firstName: 'Dean',
+      lastName: 'Winchester',
+      password: userPassword
+    });
+    const res = await req
+      .get(`/users/${user.id}`)
+      .set({ authorization: `Bearer ${token}` });
+    expect(res.statusCode).toBe(200);
+  });
+
+  it('201 if user is created', async () => {
+    const res = await req
+      .post('/users')
+      .set({ authorization: `Bearer ${token}` })
+      .send({
+        firstName: 'Sam',
+        lastName: 'Winchester',
+        password: userPassword
+      });
+    expect(res.statusCode).toBe(201);
   });
 });
