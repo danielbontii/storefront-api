@@ -16,13 +16,26 @@ This is an ecommerce API through which users can be able to browse an index of a
 - http-status-codes for response status codes
 
 ## Usage
+Rename .env .example to .env and fill all values.
+
+Run `docker-compose up -d --build` in your terminal. You will need to install [docker](https://docs.docker.com/engine/install/) if you haven't. 
+Alternatively, you can install [postgresql](https://www.postgresql.org/download/) and setup the database on your machine. This way you won't have to use `docker-compose` to connect to the database;
+
+Caveat:
+
+Docker only initalizes the database once on the first build. If you change your database credentials after the first build, the old credentials will still apply. You will have to remove the volume and rebuild the image. One possible solution is to stop the running container, use `docker volume prune` to remove the old unassociated volume and rebuild the image.
+
+Start the server with any of the start scripts below
 ### Scripts
-- yarn / yarn install : install the required packages
-- yarn run build: compile the typescript into jascript
-yarn run jasmine: run the tests
+- yarn / yarn install: install the required packages
+- yarn run start: compile the code and start the server with javascript code
+- yarn run devStart: start the server with typescript code
+- yarn run watch: compile the code, launch the server with javacript code and watch for changes
+- yarn run build / yarn run tsc: compile the typescript into javascript
+- yarn run jasmine: run the tests
 - yarn run test: compile the typescript and run the tests
 - yarn run prettier: format the code
--yarn run lint: lint the code for errors
+- yarn run lint: lint the code for errors
 
 ### API 
 API base route: /storefront/api/v1
@@ -43,4 +56,4 @@ API base route: /storefront/api/v1
 | /orders/:userId/complete |  GET | returns completed orders by userId |
 | /orders/:userId/active |  GET | returns active orders by userId |
 
-See [postman documentation](https://documenter.getpostman.com/view/19061740/2s8Z76wUwr#fc915d21-0fa5-4fc8-a8d5-4388b36ac118)
+See <a href="https://documenter.getpostman.com/view/19061740/2s8Z76wUwr#fc915d21-0fa5-4fc8-a8d5-4388b36ac118">postman documentation</a>
