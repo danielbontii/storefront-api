@@ -8,7 +8,7 @@ const errorHandlerMiddleware = (
   err: Error,
   _req: Request,
   res: Response,
-  _next: NextFunction,
+  _next: NextFunction
 ): Response => {
   if (err instanceof ValidationError) {
     return res

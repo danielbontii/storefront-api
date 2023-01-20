@@ -6,6 +6,10 @@ import { Product, ProductDetails } from '../types/product';
 import { CategoryRepository } from './CategoryRepository';
 
 export class ProductRepository {
+  /**
+   *
+   * @returns all products
+   */
   static async findAll(): Promise<Product[]> {
     const conn = await client.connect();
     const result: QueryResult<Product> = await conn.query(
@@ -17,6 +21,11 @@ export class ProductRepository {
     return result.rows;
   }
 
+  /**
+   *
+   * @param id the id of the product
+   * @returns product with the given id
+   */
   static async findById(id: string): Promise<Product> {
     const conn = await client.connect();
     const productQuery =
@@ -29,6 +38,11 @@ export class ProductRepository {
     return result.rows[0];
   }
 
+  /**
+   *
+   * @param details the details of the product
+   * @returns the created product
+   */
   static async save(details: ProductDetails): Promise<Product> {
     const conn = await client.connect();
     const createProductQuery =
@@ -64,6 +78,11 @@ export class ProductRepository {
     return { ...result.rows[0], category: details.category };
   }
 
+  /**
+   *
+   * @param category the product category
+   * @returns all product with the given category
+   */
   static async findByCategory(category: string): Promise<Product[]> {
     const conn = await client.connect();
     const productIdQuery =
@@ -88,6 +107,12 @@ export class ProductRepository {
     return categoryResult.rows;
   }
 
+  /**
+   *
+   * @param productName
+   * @param category
+   * @returns true if the product with the given name and category exists
+   */
   static async isExistentProduct(
     productName: string,
     category: string
@@ -114,5 +139,4 @@ export class ProductRepository {
     conn.release();
     return false;
   }
-
 }

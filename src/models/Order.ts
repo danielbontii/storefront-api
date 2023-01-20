@@ -8,12 +8,22 @@ import {
 } from '../utils/validations';
 
 export class OrderStore {
+  /**
+   *
+   * @param details the order details
+   * @returns cost the order cost
+   */
   static async calculateCost(details: OrderDetails): Promise<string> {
     const product = await ProductRepository.findById(details.productId);
     const cost = +product.price * +details.quantity;
     return cost.toFixed(2);
   }
 
+  /**
+   *
+   * @param details the details or array of details
+   * @returns the created order or array of orders
+   */
   static async create(
     details: OrderDetails | OrderDetails[]
   ): Promise<Order | Order[]> {
@@ -31,16 +41,31 @@ export class OrderStore {
     return await OrderRepository.save(details);
   }
 
+  /**
+   *
+   * @param id the user id
+   * @returns current orders by user with the given id
+   */
   static async currentOrdersByUser(id: string): Promise<Order[]> {
     await uuidSchema.validateAsync({ id });
     return await OrderRepository.findByCurrentUserOrders(id);
   }
 
+  /**
+   *
+   * @param id the id of the order
+   * @returns completed orders by user with given id
+   */
   static async completedOrdersByUser(id: string): Promise<Order[]> {
     await uuidSchema.validateAsync({ id });
     return await OrderRepository.findByCompletedUserOrders(id);
   }
 
+  /**
+   *
+   * @param details the details of the order or array of orders
+   * @returns the completed order or array of completed orders
+   */
   static async completeUserOrder(
     details: CompletOrderDetails | CompletOrderDetails[]
   ): Promise<Order | Order[]> {

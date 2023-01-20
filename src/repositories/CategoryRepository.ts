@@ -3,6 +3,10 @@ import client from '../database';
 import { QueryResult } from 'pg';
 
 export class CategoryRepository {
+  /**
+   *
+   * @returns all categories
+   */
   static async findAll(): Promise<Category[]> {
     const conn = await client.connect();
     const result: QueryResult<Category> = await conn.query(
@@ -12,6 +16,11 @@ export class CategoryRepository {
     return result.rows;
   }
 
+  /**
+   *
+   * @param name the name of the category
+   * @returns the created category
+   */
   static async save(name: string): Promise<Category> {
     const conn = await client.connect();
     const createCategoryQuery =
@@ -25,6 +34,11 @@ export class CategoryRepository {
     return result.rows[0];
   }
 
+  /**
+   *
+   * @param name the name of the category
+   * @returns category with the given name
+   */
   static async findByName(name: string): Promise<Category> {
     const conn = await client.connect();
     const categoryQuery =

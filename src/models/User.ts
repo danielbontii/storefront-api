@@ -14,7 +14,11 @@ export class UserStore {
     return await UserRepository.findAll();
   }
 
-  //TODO: investigate why BadRequestError is converted to ERROR in compiled js
+  /**
+   *
+   * @param id the id of the user
+   * @returns user with the given id
+   */
   static async show(id: string): Promise<User> {
     await uuidSchema.validateAsync({ id });
     const user = await UserRepository.findById(id);
@@ -29,7 +33,7 @@ export class UserStore {
   /**
    *
    * @param details details of the user to save
-   * @returns User the saved user
+   * @returns User the created user
    */
   static async create(details: UserDetails): Promise<User> {
     await userSchema.validateAsync(details, { abortEarly: false });

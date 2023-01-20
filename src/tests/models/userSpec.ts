@@ -16,7 +16,6 @@ const req = supertest(app);
 const { ADMIN_PASSWORD } = process.env;
 const token = AuthService.generateToken(ADMIN_PASSWORD as string);
 
-
 describe('User store', () => {
   it('should have an index method', () => {
     expect(UserStore.index).toBeDefined();

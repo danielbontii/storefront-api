@@ -8,6 +8,11 @@ import {
 } from '../types/order';
 
 export class OrderRepository {
+  /**
+   *
+   * @param details the order details
+   * @returns the value of the order and the sql string
+   */
   static getSaveInfo(details: OrderDetails): SaveInfo {
     const fields = details.status
       ? 'product_id, user_id, quantity, cost, status'
@@ -37,6 +42,11 @@ export class OrderRepository {
     return { values, sql };
   }
 
+  /**
+   *
+   * @param details the details of the order
+   * @returns the created user
+   */
   static async save(details: OrderDetails): Promise<Order> {
     const conn = await client.connect();
     const saveInfo = OrderRepository.getSaveInfo(details);
@@ -48,6 +58,11 @@ export class OrderRepository {
     return result.rows[0];
   }
 
+  /**
+   *
+   * @param details an array of order details
+   * @returns an array of the created orders
+   */
   static async saveAll(details: OrderDetails[]): Promise<Order[]> {
     const savedOrders: Order[] = [];
 
@@ -65,6 +80,12 @@ export class OrderRepository {
     return savedOrders;
   }
 
+  /**
+   *
+   * @param status
+   * @param id
+   * @returns an order with the given id and status
+   */
   static async findByStatus(status: string, id: string): Promise<Order[]> {
     const conn = await client.connect();
 
@@ -81,14 +102,29 @@ export class OrderRepository {
     return result.rows;
   }
 
+  /**
+   *
+   * @param id
+   * @returns order with given id and status active
+   */
   static async findByCurrentUserOrders(id: string): Promise<Order[]> {
     return await OrderRepository.findByStatus('active', id);
   }
 
+  /**
+   *
+   * @param id
+   * @returns order with given id and status completed
+   */
   static async findByCompletedUserOrders(id: string): Promise<Order[]> {
     return await OrderRepository.findByStatus('completed', id);
   }
 
+  /**
+   *
+   * @param details the details of the order
+   * @returns the completed order
+   */
   static async complete(details: CompletOrderDetails): Promise<Order> {
     const conn = await client.connect();
     const updateOrderQuery =
@@ -106,6 +142,11 @@ export class OrderRepository {
     return result.rows[0];
   }
 
+  /**
+   *
+   * @param details an array of order details
+   * @returns an array of completed orders
+   */
   static async completeAll(details: CompletOrderDetails[]): Promise<Order[]> {
     const completed: Order[] = [];
 

@@ -36,6 +36,6 @@ orderRoutes(app);
 authRoutes(app);
 
 app.use(errorHandlerMiddleware);
-app.use(notFoundMiddleWare)
+app.use(notFoundMiddleWare);
 
 export default app;

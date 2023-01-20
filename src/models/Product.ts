@@ -12,6 +12,11 @@ export class ProductStore {
     return await ProductRepository.findAll();
   }
 
+  /**
+   *
+   * @param id the id of the product
+   * @returns product with given id
+   */
   static async show(id: string): Promise<Product> {
     await uuidSchema.validateAsync({ id });
     const product = await ProductRepository.findById(id);
@@ -23,6 +28,11 @@ export class ProductStore {
     return product;
   }
 
+  /**
+   *
+   * @param details the details of the product
+   * @returns the created product
+   */
   static async create(details: ProductDetails): Promise<Product> {
     await productSchema.validateAsync(details, { abortEarly: false });
 
@@ -47,6 +57,11 @@ export class ProductStore {
     return createdProduct;
   }
 
+  /**
+   *
+   * @param category the product category
+   * @returns all product with the given category
+   */
   static async productsByCategory(category: string): Promise<Product[]> {
     const selectedCategory = await CategoryRepository.findByName(category);
 

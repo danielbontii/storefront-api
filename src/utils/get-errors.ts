@@ -1,6 +1,12 @@
 import { Category } from '../types/category';
 import { User, UserDetails } from '../types/user';
 
+/**
+ *
+ * @param fn the function to execute
+ * @param details the parameters to the function
+ * @returns error if the function throws an error
+ */
 const getInvalidDetailsError = async (
   fn: (userDetails: UserDetails) => Promise<User>,
   details: UserDetails
@@ -16,6 +22,12 @@ const getInvalidDetailsError = async (
   return error;
 };
 
+/**
+ *
+ * @param fn the function to execute
+ * @param id the parameters to the function
+ * @returns error if the function throws an error
+ */
 const getInvalidIdError = async (
   fn: (id: string) => Promise<User>,
   id: string
@@ -31,6 +43,12 @@ const getInvalidIdError = async (
   return error;
 };
 
+/**
+ *
+ * @param fn the function to execute
+ * @param password the parameters to the function
+ * @returns error if the function throws an error
+ */
 const getInvalidAuthPasswordError = (
   fn: (password: string) => string,
   password: string
@@ -46,6 +64,12 @@ const getInvalidAuthPasswordError = (
   return error;
 };
 
+/**
+ *
+ * @param fn the function to execute
+ * @param name the parameters to the function
+ * @returns error if the function throws an error
+ */
 const getCategoryError = async (
   fn: (category: string) => Promise<Category>,
   name: string

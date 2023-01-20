@@ -9,6 +9,11 @@ export class CategoryStore {
     return await CategoryRepository.findAll();
   }
 
+  /**
+   *
+   * @param name the name of the category
+   * @returns Category the created category
+   */
   static async create(name: string): Promise<Category> {
     await categorySchema.validateAsync({ name });
     const categoryExits = await CategoryRepository.findByName(name);

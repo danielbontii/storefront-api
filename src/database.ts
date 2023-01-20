@@ -67,5 +67,5 @@ const initDb = async (): Promise<void> => {
   createDbIfNotExists(TEST_DB as string);
 };
 
-export  { initDb };
+export { initDb };
 export default client;

@@ -7,6 +7,10 @@ import { User, UserDetails } from '../types/user';
 const { BCRYPT_PASSWORD, SALT_ROUNDS } = process.env;
 
 export class UserRepository {
+  /**
+   *
+   * @returns all users
+   */
   static async findAll(): Promise<User[]> {
     const conn = await client.connect();
     const findUsersQuery =
@@ -16,6 +20,11 @@ export class UserRepository {
     return result.rows;
   }
 
+  /**
+   *
+   * @param id the id of the user
+   * @returns user with the given id
+   */
   static async findById(id: string): Promise<User> {
     const conn = await client.connect();
     const findUserQuery =
@@ -26,6 +35,11 @@ export class UserRepository {
     return result.rows[0];
   }
 
+  /**
+   *
+   * @param details details of the user to save
+   * @returns User the created user
+   */
   static async save(details: UserDetails): Promise<User> {
     const conn = await client.connect();
     const createUserQuery =
@@ -45,5 +59,4 @@ export class UserRepository {
     conn.release();
     return result.rows[0];
   }
-
 }
