@@ -4,6 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 
 import { UserStore } from '../models/User';
 import { AuthService } from '../services/Auth';
+import { API_BASE_URL } from '../utils/constants';
 
 const index = async (
   _req: Request,
@@ -46,10 +47,10 @@ const create = async (
 
 const userRoutes = (app: Application) => {
   app
-    .route('/users')
+    .route(`${API_BASE_URL}/users`)
     .get(AuthService.authenticate, index)
     .post(AuthService.authenticate, create);
-  app.route('/users/:id').get(AuthService.authenticate, show);
+  app.route(`${API_BASE_URL}/users/:id`).get(AuthService.authenticate, show);
 };
 
 export default userRoutes;

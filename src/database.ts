@@ -49,7 +49,6 @@ const createDbIfNotExists = async (database: string): Promise<void> => {
 const initDb = async (): Promise<void> => {
   const DEV_DB = process.env.DEV_DB || 'postgres';
   const { TEST_DB } = process.env;
-  console.log(DEV_DB, TEST_DB);
 
   createDbIfNotExists(DEV_DB);
   const conn = await client.connect();

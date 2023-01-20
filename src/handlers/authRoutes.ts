@@ -3,6 +3,7 @@ import { Request, Response, NextFunction, Application } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
 import { AuthService } from '../services/Auth';
+import { API_BASE_URL } from '../utils/constants';
 
 const getToken = async (
   req: Request,
@@ -18,7 +19,7 @@ const getToken = async (
 };
 
 const authRoutes = (app: Application) => {
-  app.route('/auth/token').get(getToken);
+  app.route(`${API_BASE_URL}/auth/token`).get(getToken);
 };
 
 export default authRoutes;

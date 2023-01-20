@@ -5,6 +5,7 @@ import { StatusCodes } from 'http-status-codes';
 import { ProductStore } from '../models/Product';
 import { Product } from '../types/product';
 import { AuthService } from '../services/Auth';
+import { API_BASE_URL } from '../utils/constants';
 
 const index = async (
   _req: Request,
@@ -59,9 +60,14 @@ const productsByCategory = async (
 };
 
 const productRoutes = (app: Application) => {
-  app.route('/products').get(index).post(AuthService.authenticate, create);
-  app.route('/products/:id').get(show);
-  app.route('/products/categories/:category').get(productsByCategory);
+  app
+    .route(`${API_BASE_URL}/products`)
+    .get(index)
+    .post(AuthService.authenticate, create);
+  app.route(`${API_BASE_URL}/products/:id`).get(show);
+  app
+    .route(`${API_BASE_URL}/products/categories/:category`)
+    .get(productsByCategory);
 };
 
 export default productRoutes;

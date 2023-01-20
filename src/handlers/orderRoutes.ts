@@ -1,6 +1,8 @@
 import { Application, Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
+
 import { OrderStore } from '../models/Order';
+import { API_BASE_URL } from '../utils/constants';
 
 const create = async (
   req: Request,
@@ -42,10 +44,10 @@ const activeOrders = async (
 };
 
 const orderRoutes = (app: Application) => {
-  app.route('/orders').post(create);
-  app.route('/orders/complete-order').post(completeUserOrder);
-  app.route('/orders/:userId/active').get(activeOrders);
-  app.route('/orders/:userId/complete').get(activeOrders);
+  app.route(`${API_BASE_URL}/orders`).post(create);
+  app.route(`${API_BASE_URL}/orders/complete-order`).post(completeUserOrder);
+  app.route(`${API_BASE_URL}/orders/:userId/active`).get(activeOrders);
+  app.route(`${API_BASE_URL}/orders/:userId/complete`).get(activeOrders);
 };
 
 export default orderRoutes;

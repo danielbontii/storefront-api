@@ -4,6 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 
 import { CategoryStore } from '../models/Category';
 import { Category } from '../types/category';
+import { API_BASE_URL } from '../utils/constants';
 
 const index = async (
   _req: Request,
@@ -32,7 +33,7 @@ const create = async (
 };
 
 const categoryRoutes = (app: Application) => {
-  app.route('/categories').get(index).post(create);
+  app.route(`${API_BASE_URL}/categories`).get(index).post(create);
 };
 
 export default categoryRoutes;

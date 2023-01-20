@@ -5,8 +5,7 @@ import { ProductStore } from '../../models/Product';
 import { UserStore } from '../../models/User';
 import { Order } from '../../types/order';
 import app from '../../server';
-
-const userPassword = 'User@123';
+import { TEST_USER_PASSWORD } from '../../utils/constants';
 
 const req = supertest(app);
 
@@ -248,7 +247,7 @@ describe('order route should send status code', () => {
     const user = await UserStore.create({
       firstName: 'George',
       lastName: 'Bush',
-      password: userPassword
+      password: TEST_USER_PASSWORD
     });
     const res = await req.get(`/orders/${user.id}/complete`);
     expect(res.statusCode).toBe(200);
@@ -257,7 +256,7 @@ describe('order route should send status code', () => {
     const user = await UserStore.create({
       firstName: 'John',
       lastName: 'Bush',
-      password: userPassword
+      password: TEST_USER_PASSWORD
     });
     const res = await req.get(`/orders/${user.id}/active`);
     expect(res.statusCode).toBe(200);
@@ -266,7 +265,7 @@ describe('order route should send status code', () => {
     const user = await UserStore.create({
       firstName: 'John',
       lastName: 'Stone',
-      password: userPassword
+      password: TEST_USER_PASSWORD
     });
 
     const product = await ProductStore.create({
@@ -285,7 +284,7 @@ describe('order route should send status code', () => {
     const user = await UserStore.create({
       firstName: 'John',
       lastName: 'Washington',
-      password: userPassword
+      password: TEST_USER_PASSWORD
     });
 
     const product = await ProductStore.create({
@@ -311,7 +310,7 @@ describe('order route should send status code', () => {
     const user = await UserStore.create({
       firstName: 'John',
       lastName: 'Washington',
-      password: userPassword
+      password: TEST_USER_PASSWORD
     });
 
     const product = await ProductStore.create({
@@ -336,7 +335,7 @@ describe('order route should send status code', () => {
     const user = await UserStore.create({
       firstName: 'John',
       lastName: 'Doe',
-      password: userPassword
+      password: TEST_USER_PASSWORD
     });
 
     const product = await ProductStore.create({

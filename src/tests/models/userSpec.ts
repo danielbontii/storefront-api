@@ -10,12 +10,12 @@ import {
 import { truncateTable } from '../../utils/dbUtils';
 import { AuthService } from '../../services/Auth';
 import app from '../../server';
+import { TEST_USER_PASSWORD } from '../../utils/constants';
 
 const req = supertest(app);
 const { ADMIN_PASSWORD } = process.env;
 const token = AuthService.generateToken(ADMIN_PASSWORD as string);
 
-const userPassword = 'User@123';
 
 describe('User store', () => {
   it('should have an index method', () => {
@@ -40,13 +40,13 @@ describe('Userstore index method', () => {
     const firstUser = await UserStore.create({
       firstName: 'Micheal',
       lastName: 'Lopez',
-      password: userPassword
+      password: TEST_USER_PASSWORD
     });
 
     const secondUser = await UserStore.create({
       firstName: 'Chris',
       lastName: 'Bratford',
-      password: userPassword
+      password: TEST_USER_PASSWORD
     });
 
     expect(await UserStore.index()).toEqual([
@@ -86,7 +86,7 @@ describe('Userstore show method', () => {
     const createdUser = await UserStore.create({
       firstName: 'Micheal',
       lastName: 'Lopez',
-      password: userPassword
+      password: TEST_USER_PASSWORD
     });
 
     expect(await UserStore.show(createdUser.id)).toEqual({
@@ -102,7 +102,7 @@ describe('User store create method', () => {
     const createdUser = await UserStore.create({
       firstName: 'Danny',
       lastName: 'Bontii',
-      password: userPassword
+      password: TEST_USER_PASSWORD
     });
 
     expect(createdUser).toEqual({
@@ -116,7 +116,7 @@ describe('User store create method', () => {
     const createdUser = await UserStore.create({
       firstName: 'Jax',
       lastName: 'Brigss',
-      password: userPassword
+      password: TEST_USER_PASSWORD
     });
 
     //@ts-ignore
@@ -130,7 +130,7 @@ describe('User store first name check', () => {
     const user = {
       firstName: undefined,
       lastName: 'Mitchel',
-      password: userPassword
+      password: TEST_USER_PASSWORD
     };
 
     //@ts-ignore
@@ -143,7 +143,7 @@ describe('User store first name check', () => {
     const user = {
       firstName: '',
       lastName: 'Logan',
-      password: userPassword
+      password: TEST_USER_PASSWORD
     };
 
     const error = await getInvalidDetailsError(UserStore.create, user);
@@ -154,7 +154,7 @@ describe('User store first name check', () => {
     const user = {
       firstName: 'Name1234',
       lastName: 'Logan',
-      password: userPassword
+      password: TEST_USER_PASSWORD
     };
 
     const error = await getInvalidDetailsError(UserStore.create, user);
@@ -165,7 +165,7 @@ describe('User store first name check', () => {
     const user = {
       firstName: 'd@niel',
       lastName: 'Logan',
-      password: userPassword
+      password: TEST_USER_PASSWORD
     };
 
     const error = await getInvalidDetailsError(UserStore.create, user);
@@ -176,7 +176,7 @@ describe('User store first name check', () => {
     const user = {
       firstName: 'First-name',
       lastName: 'Logan',
-      password: userPassword
+      password: TEST_USER_PASSWORD
     };
 
     const error = await getInvalidDetailsError(UserStore.create, user);
@@ -190,7 +190,7 @@ describe('User store last name check', () => {
     const user = {
       firstName: 'Samuel',
       lastName: undefined,
-      password: userPassword
+      password: TEST_USER_PASSWORD
     };
 
     //@ts-ignore
@@ -235,7 +235,7 @@ describe('User store last name check', () => {
     const user = {
       lastName: 'Logan',
       firstName: 'Last-name',
-      password: userPassword
+      password: TEST_USER_PASSWORD
     };
 
     const error = await getInvalidDetailsError(UserStore.create, user);
@@ -306,7 +306,7 @@ describe('users route should send status code', () => {
     const user = await UserStore.create({
       firstName: 'Dean',
       lastName: 'Winchester',
-      password: userPassword
+      password: TEST_USER_PASSWORD
     });
     const res = await req
       .get(`/users/${user.id}`)
@@ -321,7 +321,7 @@ describe('users route should send status code', () => {
       .send({
         firstName: 'Sam',
         lastName: 'Winchester',
-        password: userPassword
+        password: TEST_USER_PASSWORD
       });
     expect(res.statusCode).toBe(201);
   });
