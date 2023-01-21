@@ -59,7 +59,11 @@ describe('Auth middleware should return status 401 if password is token is absen
   it('when accessing create user route', async () => {
     const res = await req
       .post(`${API_BASE_URL}/users`)
-      .send({ firstName: 'John', lastName: 'Doe', password: TEST_USER_PASSWORD });
+      .send({
+        firstName: 'John',
+        lastName: 'Doe',
+        password: TEST_USER_PASSWORD
+      });
     expect(res.statusCode).toEqual(401);
   });
 });
@@ -89,7 +93,11 @@ describe('Auth middleware should return status 200 if token is present', () => {
     const res = await req
       .post(`${API_BASE_URL}/users`)
       .set({ authorization: `Bearer ${token}` })
-      .send({ firstName: 'John', lastName: 'Doe', password: TEST_USER_PASSWORD });
+      .send({
+        firstName: 'John',
+        lastName: 'Doe',
+        password: TEST_USER_PASSWORD
+      });
     expect(res.statusCode).toEqual(201);
   });
 });

@@ -17,9 +17,9 @@ let PORT: string;
 
 if (process.env.NODE_ENV == 'dev') {
   PORT = process.env.DEV_SERVER_PORT as string;
-}else if (process.env.PORT == 'test') {
+} else if (process.env.PORT == 'test') {
   PORT = process.env.TEST_SERVER_PORT as string;
-}else {
+} else {
   PORT = '5000';
 }
 

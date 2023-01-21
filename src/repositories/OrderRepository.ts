@@ -21,23 +21,8 @@ export class OrderRepository {
       delete details.status;
     }
 
-    // const values = details.status
-    //   ? [
-    //       // details.productId,
-    //       details.userId,
-    //       // details.quantity,
-    //       // details.cost,
-    //       details.status
-    //     ]
-    //   : [details.productId, details.userId, details.quantity, details.cost];
     const values = details.status
-      ? [
-          // details.productId,
-          details.userId,
-          // details.quantity,
-          // details.cost,
-          details.status
-        ]
+      ? [details.userId, details.status]
       : [details.userId];
 
     const sql =
@@ -113,7 +98,7 @@ export class OrderRepository {
     for (const order of result.rows) {
       order.products = await OrderProductsRepository.findByOrderId(order.id);
     }
-    
+
     conn.release();
     return result.rows;
   }
@@ -152,7 +137,6 @@ export class OrderRepository {
     const result: QueryResult<Order> = await conn.query(updateOrderQuery, [
       details.orderId,
       details.userId
-      // details.productId
     ]);
     result.rows[0].products = await OrderProductsRepository.findByOrderId(
       result.rows[0].id

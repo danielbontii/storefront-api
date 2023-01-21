@@ -44,9 +44,6 @@ describe('OrderStore should', () => {
 
     expect(order).toEqual({
       id: order.id,
-      // productId: order.productId,
-      // quantity: 3,
-      // cost: '30.00',
       products: [
         {
           id: order.products[0].id,
@@ -108,7 +105,6 @@ describe('OrderStore should', () => {
 
     const orderToComplete = {
       orderId: compOrder.id,
-      // productId: product.id,
       userId: user.id
     };
     const completedOrder = (await OrderStore.completeUserOrder(
@@ -118,10 +114,7 @@ describe('OrderStore should', () => {
     expect(completedOrder).toEqual({
       id: completedOrder.id,
       products: completedOrder.products,
-      // productId: completedOrder.productId,
       userId: completedOrder.userId,
-      // quantity: completedOrder.quantity,
-      // cost: completedOrder.cost,
       status: completedOrder.status,
       createdAt: completedOrder.createdAt,
       completedAt: completedOrder.completedAt
@@ -154,12 +147,10 @@ describe('OrderStore should', () => {
     const completedOrders = (await OrderStore.completeUserOrder([
       {
         orderId: multiOrder.id,
-        // productId: multiProduct.id,
         userId: multiUser.id
       },
       {
         orderId: multiOrderTwo.id,
-        // productId: multiProduct.id,
         userId: multiUser.id
       }
     ])) as Order[];
@@ -169,8 +160,6 @@ describe('OrderStore should', () => {
         id: completedOrders[0].id,
         products: completedOrders[0].products,
         userId: completedOrders[0].userId,
-        // quantity: completedOrders[0].quantity,
-        // cost: completedOrders[0].cost,
         status: completedOrders[0].status,
         createdAt: completedOrders[0].createdAt,
         completedAt: completedOrders[0].completedAt
@@ -179,8 +168,6 @@ describe('OrderStore should', () => {
         id: completedOrders[1].id,
         products: completedOrders[1].products,
         userId: completedOrders[1].userId,
-        // quantity: completedOrders[1].quantity,
-        // cost: completedOrders[1].cost,
         status: completedOrders[1].status,
         createdAt: completedOrders[1].createdAt,
         completedAt: completedOrders[1].completedAt
@@ -233,7 +220,6 @@ describe('OrderStore should', () => {
 
     const completedOrderFive = (await OrderStore.completeUserOrder({
       userId: compUser.id,
-      // productId: compProduct.id,
       orderId: compOrderFive.id
     })) as Order;
 
@@ -278,12 +264,12 @@ describe('order route should send status code', () => {
     });
     const res = await req.post(`${API_BASE_URL}/orders`).send({
       userId: user.id,
-      products: [{
-        productId: product.id,
-        quantity: 5
-      }]
-      // productId: product.id,
-      // quantity: 5
+      products: [
+        {
+          productId: product.id,
+          quantity: 5
+        }
+      ]
     });
     expect(res.statusCode).toBe(201);
   });
@@ -303,13 +289,11 @@ describe('order route should send status code', () => {
     const res = await req.post(`${API_BASE_URL}/orders`).send([
       {
         userId: user.id,
-        products: [{        productId: product.id,
-          quantity: 5}]
+        products: [{ productId: product.id, quantity: 5 }]
       },
       {
         userId: user.id,
-        products: [{        productId: product.id,
-          quantity: 12}]
+        products: [{ productId: product.id, quantity: 12 }]
       }
     ]);
     expect(res.statusCode).toBe(201);
@@ -334,7 +318,6 @@ describe('order route should send status code', () => {
     })) as Order;
     const res = await req.post(`${API_BASE_URL}/orders/complete-order`).send({
       userId: user.id,
-      // productId: product.id,
       orderId: order.id
     });
     expect(res.statusCode).toBe(200);
@@ -372,12 +355,10 @@ describe('order route should send status code', () => {
     const res = await req.post(`${API_BASE_URL}/orders/complete-order`).send([
       {
         userId: user.id,
-        // productId: product.id,
         orderId: order.id
       },
       {
         userId: user.id,
-        // productId: productTwo.id,
         orderId: orderTwo.id
       }
     ]);

@@ -42,21 +42,21 @@ const uuidSchema = Joi.object({
 });
 
 const orderValidations = Joi.object({
-
   userId: uuidValidation.label('user id of order'),
   status: Joi.string().valid('', 'active', 'complete').label('status of order'),
-  products: Joi.array().items(Joi.object({
-    productId: uuidValidation.label('product id of order'),
-    quantity: Joi.number().required().min(1).label('quantity of order'),
-  }))
+  products: Joi.array().items(
+    Joi.object({
+      productId: uuidValidation.label('product id of order'),
+      quantity: Joi.number().required().min(1).label('quantity of order')
+    })
+  )
 });
 
 const orderSchema = Joi.array().items(orderValidations);
 
 const completeOrderValidations = Joi.object({
   orderId: uuidValidation.label('orderId'),
-  userId: uuidValidation.label('userId'),
-  // productId: uuidValidation.label('productId')
+  userId: uuidValidation.label('userId')
 });
 
 const completOrderSchema = Joi.array().items(completeOrderValidations);
