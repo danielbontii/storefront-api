@@ -102,7 +102,7 @@ export class OrderRepository {
     const conn = await client.connect();
 
     const ordersQuery =
-      'SELECT id, product_id AS "productId", quantity, cost, ' +
+      'SELECT id, ' +
       'user_id AS "userId", status, created_at AS "createdAt", ' +
       'completed_at AS "completedAt" FROM orders WHERE status = ' +
       `'${status}'` +
@@ -110,6 +110,10 @@ export class OrderRepository {
 
     const result: QueryResult<Order> = await conn.query(ordersQuery, [id]);
 
+    for (const order of result.rows) {
+      order.products = await OrderProductsRepository.findByOrderId(order.id);
+    }
+    
     conn.release();
     return result.rows;
   }

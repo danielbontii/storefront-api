@@ -30,7 +30,8 @@ export class OrderProductsRepository {
 
   static async findByOrderId(orderId: string): Promise<SavedOrderedProduct[]> {
     const conn = await client.connect();
-    const sql = 'SELECT * FROM order_products WHERE order_id = ($1)';
+    const sql = 'SELECT id, order_id AS "orderId", quantity, ' + 
+      'product_id AS "productId" FROM order_products WHERE order_id = ($1)';
     const result:QueryResult<SavedOrderedProduct> = await conn.query(sql, [orderId]);
     conn.release();
     return result.rows;
