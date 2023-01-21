@@ -2,13 +2,19 @@
   DEV_DB=
   DEV_DB_USER=
   DEV_DB_PASS=
+  DEV_DB_PORT=
 
   TEST_DB_HOST=
   TEST_DB=
   TEST_DB_USER=
   TEST_DB_PASS=
+  TEST_DB_PORT=
 
-  ENV=dev
+  DEV_SERVER_PORT=3000
+  TEST_SERVER_PORT=5500
+
+  #coose between dev and test
+  NODE_ENV=dev
 
   BCRYPT_PASSWORD=
   SALT_ROUNDS=

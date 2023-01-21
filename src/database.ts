@@ -11,28 +11,32 @@ const {
   DEV_DB,
   DEV_DB_USER,
   DEV_DB_PASS,
+  DEV_DB_PORT,
   TEST_DB_HOST,
   TEST_DB,
   TEST_DB_USER,
   TEST_DB_PASS,
-  ENV
+  TEST_DB_PORT,
+  NODE_ENV
 } = process.env;
 
 let client: Pool;
 
-if (ENV === 'dev') {
+if (NODE_ENV === 'dev') {
   client = new Pool({
     host: DEV_DB_HOST,
     user: DEV_DB_USER,
     database: DEV_DB,
-    password: DEV_DB_PASS
+    password: DEV_DB_PASS,
+    port: Number(DEV_DB_PORT)
   });
 } else {
   client = new Pool({
     host: TEST_DB_HOST,
     user: TEST_DB_USER,
     database: TEST_DB,
-    password: TEST_DB_PASS
+    password: TEST_DB_PASS,
+    port: Number(TEST_DB_PORT)
   });
 }
 

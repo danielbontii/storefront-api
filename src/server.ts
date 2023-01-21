@@ -10,17 +10,24 @@ import { initDb } from './database';
 import notFoundMiddleWare from './middleware/not-found';
 
 const app: express.Application = express();
-const address = '0.0.0.0:3000';
 
 app.use(express.json());
 
-const PORT = process.env.PORT || 3000;
+let PORT: string;
+
+if (process.env.NODE_ENV == 'dev') {
+  PORT = process.env.DEV_SERVER_PORT as string;
+}else if (process.env.PORT == 'test') {
+  PORT = process.env.TEST_SERVER_PORT as string;
+}else {
+  PORT = '5000';
+}
 
 const start = async () => {
   try {
     initDb();
     app.listen(PORT, async function () {
-      console.log(`starting app on: ${address}`);
+      console.log(`starting app on: ${PORT}`);
     });
   } catch (error) {
     console.log('Failed to start server: ' + error);

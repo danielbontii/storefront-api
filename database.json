@@ -4,13 +4,15 @@
     "host":  { "ENV": "DEV_DB_HOST" },
     "database": { "ENV": "DEV_DB" },
     "user": { "ENV": "DEV_DB_USER" },
-    "password": { "ENV": "DEV_DB_PASS" }
+    "password": { "ENV": "DEV_DB_PASS" },
+    "port": { "ENV": "DEV_DB_PORT" }
   },
   "test": {
     "driver": "pg",
     "host": { "ENV": "TEST_DB_HOST" },
     "database": { "ENV": "TEST_DB" },
     "user": { "ENV": "TEST_DB_USER" },
-    "password": { "ENV": "TEST_DB_PASS" }
+    "password": { "ENV": "TEST_DB_PASS" },
+    "port": { "ENV": "TEST_DB_PORT" }
   }
 }

@@ -10,7 +10,7 @@
     "tsc": "tsc",
     "jasmine": "jasmine",
     "build": "npx tsc",
-    "test": "set ENV=test && npx tsc && db-migrate --env test reset && db-migrate --env test up && jasmine",
+    "test": "set NODE_ENV=test && yarn run tsc && db-migrate --env test reset && db-migrate --env test up && jasmine",
     "lint": "npx eslint . --ext .ts",
     "prettier": "prettier --config .prettierrc src/**/*.ts --write"
   },

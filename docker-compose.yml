@@ -11,9 +11,21 @@ services:
       - POSTGRES_PASSWORD=${DEV_DB_PASS}
       - POSTGRES_DB=${DEV_DB}
     ports:
-      - '5432:5432'
+      - '${DEV_DB_PORT}:5432'
     volumes:
       - 'postgres:/var/lib/postgresql/data'
+
+  postgres_test:
+    image: postgres
+
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${TEST_DB_USER}
+      - POSTGRES_PASSWORD=${TEST_DB_PASS}
+      - POSTGRES_DB=${TEST_DB}
+    ports:
+      - '${TEST_DB_PORT}:5432'
 
 volumes:
   postgres:
