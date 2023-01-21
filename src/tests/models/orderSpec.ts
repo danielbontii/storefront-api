@@ -24,7 +24,7 @@ describe('OrderStore should have ', () => {
   });
 });
 
-describe('OrderStore should', () => {
+fdescribe('OrderStore should', () => {
   it('create order', async () => {
     const user = await UserStore.create({
       firstName: 'John',
@@ -47,7 +47,14 @@ describe('OrderStore should', () => {
       // productId: order.productId,
       // quantity: 3,
       // cost: '30.00',
-      products: [{ productId: product.id, quantity: 3 }],
+      products: [
+        {
+          id: order.products[0].id,
+          productId: product.id,
+          quantity: 3,
+          orderId: order.id
+        }
+      ],
       status: order.status,
       userId: order.userId,
       createdAt: order.createdAt,

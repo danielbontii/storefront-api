@@ -6,6 +6,7 @@ import {
   OrderDetails,
   SaveInfo
 } from '../types/order';
+import { OrderProductsRepository } from './OrderProductsRepository';
 
 export class OrderRepository {
   /**
@@ -14,29 +15,36 @@ export class OrderRepository {
    * @returns the value of the order and the sql string
    */
   static getSaveInfo(details: OrderDetails): SaveInfo {
-    const fields = details.status
-      ? 'product_id, user_id, quantity, cost, status'
-      : 'product_id, user_id, quantity, cost';
+    const fields = details.status ? 'user_id, status' : 'user_id';
 
     if (!details.status) {
       delete details.status;
     }
 
+    // const values = details.status
+    //   ? [
+    //       // details.productId,
+    //       details.userId,
+    //       // details.quantity,
+    //       // details.cost,
+    //       details.status
+    //     ]
+    //   : [details.productId, details.userId, details.quantity, details.cost];
     const values = details.status
       ? [
-          details.productId,
+          // details.productId,
           details.userId,
-          details.quantity,
-          details.cost,
+          // details.quantity,
+          // details.cost,
           details.status
         ]
-      : [details.productId, details.userId, details.quantity, details.cost];
+      : [details.userId];
 
     const sql =
       `INSERT INTO orders(${fields}) VALUES ${
-        details.status ? '($1, $2, $3, $4, $5)' : '($1, $2, $3, $4)'
+        details.status ? '($1, $2)' : '($1)'
       } ` +
-      'RETURNING id, product_id AS "productId", quantity, cost, user_id AS "userId", ' +
+      'RETURNING id, user_id AS "userId", ' +
       'status, created_at AS "createdAt", completed_at AS "completedAt"';
 
     return { values, sql };
@@ -53,6 +61,10 @@ export class OrderRepository {
     const result: QueryResult<Order> = await conn.query(
       saveInfo.sql,
       saveInfo.values
+    );
+    result.rows[0].products = await OrderProductsRepository.saveAll(
+      result.rows[0].id,
+      details.products
     );
     conn.release();
     return result.rows[0];
@@ -135,8 +147,8 @@ export class OrderRepository {
 
     const result: QueryResult<Order> = await conn.query(updateOrderQuery, [
       details.orderId,
-      details.userId,
-      details.productId
+      details.userId
+      // details.productId
     ]);
     conn.release();
     return result.rows[0];

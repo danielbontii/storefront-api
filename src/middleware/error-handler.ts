@@ -10,6 +10,8 @@ const errorHandlerMiddleware = (
   res: Response,
   _next: NextFunction
 ): Response => {
+  console.log(err);
+  
   if (err instanceof ValidationError) {
     return res
       .status(StatusCodes.BAD_REQUEST)

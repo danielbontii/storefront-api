@@ -3,6 +3,8 @@
 //   userId: string;
 // }
 
+import { SavedOrderedProduct } from "./orderProducts";
+
 interface UserId {
   // productId: string;
   userId: string;
@@ -13,7 +15,7 @@ interface UserId {
 //   status?: string;
 //   cost?: string;
 // }
-interface OrderedProduct {
+export interface OrderedProduct {
   productId: string;
   // userId: string;
   quantity: number;
@@ -24,8 +26,10 @@ export interface OrderDetails extends UserId {
   products: OrderedProduct[];
 }
 
-export interface Order extends OrderDetails {
+export interface Order extends UserId {
+  status?: string;
   id: string;
+  products: SavedOrderedProduct[];
   createdAt: Date;
   completedAt: Date | null;
 }

@@ -13,11 +13,11 @@ export class OrderStore {
    * @param details the order details
    * @returns cost the order cost
    */
-  static async calculateCost(details: OrderDetails): Promise<string> {
-    const product = await ProductRepository.findById(details.productId);
-    const cost = +product.price * +details.quantity;
-    return cost.toFixed(2);
-  }
+  // static async calculateCost(details: OrderDetails): Promise<string> {
+  //   const product = await ProductRepository.findById(details.productId);
+  //   const cost = +product.price * +details.quantity;
+  //   return cost.toFixed(2);
+  // }
 
   /**
    *
@@ -29,15 +29,15 @@ export class OrderStore {
   ): Promise<Order | Order[]> {
     if (Array.isArray(details)) {
       await orderSchema.validateAsync(details);
-      for (const detail of details) {
-        detail.cost = await OrderStore.calculateCost(detail);
-      }
+      // for (const detail of details) {
+      //   detail.cost = await OrderStore.calculateCost(detail);
+      // }
 
       return await OrderRepository.saveAll(details);
     }
 
     await orderSchema.validateAsync([details]);
-    details.cost = await OrderStore.calculateCost(details);
+    // details.cost = await OrderStore.calculateCost(details);
     return await OrderRepository.save(details);
   }
 
