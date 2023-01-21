@@ -38,16 +38,16 @@ describe('OrderStore should', () => {
     });
 
     const order = (await OrderStore.create({
-      productId: product.id,
-      quantity: 3,
-      userId: user.id
+      userId: user.id,
+      products: [{ productId: product.id, quantity: 3 }]
     })) as Order;
 
     expect(order).toEqual({
       id: order.id,
-      productId: order.productId,
-      quantity: 3,
-      cost: '30.00',
+      // productId: order.productId,
+      // quantity: 3,
+      // cost: '30.00',
+      products: [{ productId: product.id, quantity: 3 }],
       status: order.status,
       userId: order.userId,
       createdAt: order.createdAt,
@@ -69,15 +69,13 @@ describe('OrderStore should', () => {
     });
 
     const orderOne = {
-      productId: product.id,
-      quantity: 4,
-      userId: user.id
+      userId: user.id,
+      products: [{ productId: product.id, quantity: 4 }]
     };
 
     const orderTwo = {
-      productId: product.id,
-      quantity: 3,
-      userId: user.id
+      userId: user.id,
+      products: [{ productId: product.id, quantity: 3 }]
     };
 
     const orders = (await OrderStore.create([orderOne, orderTwo])) as Order[];
@@ -97,9 +95,8 @@ describe('OrderStore should', () => {
       category: 'Boys'
     });
     const compOrder = (await OrderStore.create({
-      productId: product.id,
-      quantity: 3,
-      userId: user.id
+      userId: user.id,
+      products: [{ productId: product.id, quantity: 3 }]
     })) as Order;
 
     const orderToComplete = {
@@ -113,10 +110,11 @@ describe('OrderStore should', () => {
 
     expect(completedOrder).toEqual({
       id: completedOrder.id,
-      productId: completedOrder.productId,
+      products: completedOrder.products,
+      // productId: completedOrder.productId,
       userId: completedOrder.userId,
-      quantity: completedOrder.quantity,
-      cost: completedOrder.cost,
+      // quantity: completedOrder.quantity,
+      // cost: completedOrder.cost,
       status: completedOrder.status,
       createdAt: completedOrder.createdAt,
       completedAt: completedOrder.completedAt
@@ -137,9 +135,8 @@ describe('OrderStore should', () => {
     });
 
     const orderFour = {
-      productId: activeProduct.id,
-      quantity: 5,
-      userId: activeUser.id
+      userId: activeUser.id,
+      products: [{ productId: activeProduct.id, quantity: 5 }]
     };
 
     const activeOrder = (await OrderStore.create(orderFour)) as Order;
@@ -163,26 +160,24 @@ describe('OrderStore should', () => {
     });
 
     const multiOrder = (await OrderStore.create({
-      productId: multiProduct.id,
-      quantity: 5,
-      userId: multiUser.id
+      userId: multiUser.id,
+      products: [{ productId: multiProduct.id, quantity: 5 }]
     })) as Order;
 
     const multiOrderTwo = (await OrderStore.create({
-      productId: multiProduct.id,
-      quantity: 5,
-      userId: multiUser.id
+      userId: multiUser.id,
+      products: [{ productId: multiProduct.id, quantity: 5 }]
     })) as Order;
 
     const completedOrders = (await OrderStore.completeUserOrder([
       {
         orderId: multiOrder.id,
-        productId: multiProduct.id,
+        // productId: multiProduct.id,
         userId: multiUser.id
       },
       {
         orderId: multiOrderTwo.id,
-        productId: multiProduct.id,
+        // productId: multiProduct.id,
         userId: multiUser.id
       }
     ])) as Order[];
@@ -190,20 +185,20 @@ describe('OrderStore should', () => {
     expect(completedOrders).toEqual([
       {
         id: completedOrders[0].id,
-        productId: completedOrders[0].productId,
+        products: completedOrders[0].products,
         userId: completedOrders[0].userId,
-        quantity: completedOrders[0].quantity,
-        cost: completedOrders[0].cost,
+        // quantity: completedOrders[0].quantity,
+        // cost: completedOrders[0].cost,
         status: completedOrders[0].status,
         createdAt: completedOrders[0].createdAt,
         completedAt: completedOrders[0].completedAt
       },
       {
         id: completedOrders[1].id,
-        productId: completedOrders[1].productId,
+        products: completedOrders[1].products,
         userId: completedOrders[1].userId,
-        quantity: completedOrders[1].quantity,
-        cost: completedOrders[1].cost,
+        // quantity: completedOrders[1].quantity,
+        // cost: completedOrders[1].cost,
         status: completedOrders[1].status,
         createdAt: completedOrders[1].createdAt,
         completedAt: completedOrders[1].completedAt
@@ -225,14 +220,13 @@ describe('OrderStore should', () => {
     });
 
     const compOrderFive = (await OrderStore.create({
-      productId: compProduct.id,
-      quantity: 7,
-      userId: compUser.id
+      userId: compUser.id,
+      products: [{ productId: compProduct.id, quantity: 7 }]
     })) as Order;
 
     const completedOrderFive = (await OrderStore.completeUserOrder({
       userId: compUser.id,
-      productId: compProduct.id,
+      // productId: compProduct.id,
       orderId: compOrderFive.id
     })) as Order;
 
@@ -320,9 +314,8 @@ describe('order route should send status code', () => {
     });
 
     const order = (await OrderStore.create({
-      productId: product.id,
-      quantity: 3,
-      userId: user.id
+      userId: user.id,
+      products: [{ productId: product.id, quantity: 3 }]
     })) as Order;
     const res = await req.post(`${API_BASE_URL}/orders/complete-order`).send({
       userId: user.id,
@@ -351,15 +344,13 @@ describe('order route should send status code', () => {
     });
 
     const order = (await OrderStore.create({
-      productId: product.id,
-      quantity: 3,
-      userId: user.id
+      userId: user.id,
+      products: [{ productId: product.id, quantity: 3 }]
     })) as Order;
 
     const orderTwo = (await OrderStore.create({
-      productId: productTwo.id,
-      quantity: 15,
-      userId: user.id
+      userId: user.id,
+      products: [{ productId: productTwo.id, quantity: 15 }]
     })) as Order;
 
     const res = await req.post(`${API_BASE_URL}/orders/complete-order`).send([

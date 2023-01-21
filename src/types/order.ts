@@ -4,7 +4,7 @@
 // }
 
 interface UserId {
-  productId: string;
+  // productId: string;
   userId: string;
 }
 
@@ -15,7 +15,8 @@ interface UserId {
 // }
 interface OrderedProduct {
   productId: string;
-  userId: string;
+  // userId: string;
+  quantity: number;
 }
 
 export interface OrderDetails extends UserId {
