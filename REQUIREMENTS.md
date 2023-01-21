@@ -14,7 +14,7 @@ These are the notes from a meeting with the frontend developer that describe wha
 #### Users
 - Index [token required]
 - Show [token required]
-- Create N[token required]
+- Create N[token required] 
 
 #### Orders
 - Current Order by user (args: user id)[token required]
@@ -33,10 +33,49 @@ These are the notes from a meeting with the frontend developer that describe wha
 - lastName
 - password
 
+#### Category
+- id
+- name
+
 #### Orders
 - id
 - id of each product in the order
 - quantity of each product in the order
 - user_id
 - status of order (active or complete)
+
+## Routes 
+
+### Product Routes
+'/products'  [GET] 
+
+'/products/:id' [GET] 
+
+'/products' [POST] 
+
+'/products/categories/:category' [GET]
+
+### User routes
+'/users'  [GET] 
+
+'/users/:id'  [GET]
+
+'/users'  [POST]
+
+### Orders routes
+'/orders'  [POST] 
+
+'/orders/complete-order'  [POST]
+
+'/orders/:userId/complete'  [GET]
+
+'/orders/:userId/active'  [GET]
+
+### Category routes
+'/categories' [GET] 
+
+'/categories' [POST] 
+
+### Auth routes
+'/auth/?password' [GET]
 
