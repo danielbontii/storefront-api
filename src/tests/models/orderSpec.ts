@@ -24,7 +24,7 @@ describe('OrderStore should have ', () => {
   });
 });
 
-fdescribe('OrderStore should', () => {
+describe('OrderStore should', () => {
   it('create order', async () => {
     const user = await UserStore.create({
       firstName: 'John',
@@ -253,6 +253,7 @@ describe('order route should send status code', () => {
     const res = await req.get(`${API_BASE_URL}/orders/${user.id}/complete`);
     expect(res.statusCode).toBe(200);
   });
+
   it('200 if active orders route is accessed', async () => {
     const user = await UserStore.create({
       firstName: 'John',
@@ -262,7 +263,8 @@ describe('order route should send status code', () => {
     const res = await req.get(`${API_BASE_URL}/orders/${user.id}/active`);
     expect(res.statusCode).toBe(200);
   });
-  it('201 if create order route is accessed', async () => {
+
+  it('201 if order is created', async () => {
     const user = await UserStore.create({
       firstName: 'John',
       lastName: 'Stone',
@@ -276,12 +278,17 @@ describe('order route should send status code', () => {
     });
     const res = await req.post(`${API_BASE_URL}/orders`).send({
       userId: user.id,
-      productId: product.id,
-      quantity: 5
+      products: [{
+        productId: product.id,
+        quantity: 5
+      }]
+      // productId: product.id,
+      // quantity: 5
     });
     expect(res.statusCode).toBe(201);
   });
-  it('201 if create multiple orders route is accessed', async () => {
+
+  it('201 if  multiple orders are created', async () => {
     const user = await UserStore.create({
       firstName: 'John',
       lastName: 'Washington',
@@ -296,18 +303,19 @@ describe('order route should send status code', () => {
     const res = await req.post(`${API_BASE_URL}/orders`).send([
       {
         userId: user.id,
-        productId: product.id,
-        quantity: 5
+        products: [{        productId: product.id,
+          quantity: 5}]
       },
       {
         userId: user.id,
-        productId: product.id,
-        quantity: 12
+        products: [{        productId: product.id,
+          quantity: 12}]
       }
     ]);
     expect(res.statusCode).toBe(201);
   });
-  it('200 if complete order route is accessed', async () => {
+
+  it('200 if order is completed', async () => {
     const user = await UserStore.create({
       firstName: 'John',
       lastName: 'Washington',
@@ -326,12 +334,13 @@ describe('order route should send status code', () => {
     })) as Order;
     const res = await req.post(`${API_BASE_URL}/orders/complete-order`).send({
       userId: user.id,
-      productId: product.id,
+      // productId: product.id,
       orderId: order.id
     });
     expect(res.statusCode).toBe(200);
   });
-  it('200 if complete multiple orders route is accessed', async () => {
+
+  it('200 if  multiple orders are complete', async () => {
     const user = await UserStore.create({
       firstName: 'John',
       lastName: 'Doe',
@@ -363,12 +372,12 @@ describe('order route should send status code', () => {
     const res = await req.post(`${API_BASE_URL}/orders/complete-order`).send([
       {
         userId: user.id,
-        productId: product.id,
+        // productId: product.id,
         orderId: order.id
       },
       {
         userId: user.id,
-        productId: productTwo.id,
+        // productId: productTwo.id,
         orderId: orderTwo.id
       }
     ]);
