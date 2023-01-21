@@ -141,8 +141,8 @@ export class OrderRepository {
     const conn = await client.connect();
     const updateOrderQuery =
       "UPDATE orders SET status = 'completed', completed_at = CURRENT_TIMESTAMP WHERE id = ($1) " +
-      'AND user_id = ($2) AND product_id = ($3) ' +
-      'RETURNING id, product_id AS "productId", quantity, cost, user_id AS "userId", ' +
+      'AND user_id = ($2) ' +
+      'RETURNING id, user_id AS "userId", ' +
       'status, created_at AS "createdAt", completed_at AS "completedAt"';
 
     const result: QueryResult<Order> = await conn.query(updateOrderQuery, [
@@ -150,6 +150,9 @@ export class OrderRepository {
       details.userId
       // details.productId
     ]);
+    result.rows[0].products = await OrderProductsRepository.findByOrderId(
+      result.rows[0].id
+    );
     conn.release();
     return result.rows[0];
   }

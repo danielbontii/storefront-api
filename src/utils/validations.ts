@@ -56,7 +56,7 @@ const orderSchema = Joi.array().items(orderValidations);
 const completeOrderValidations = Joi.object({
   orderId: uuidValidation.label('orderId'),
   userId: uuidValidation.label('userId'),
-  productId: uuidValidation.label('productId')
+  // productId: uuidValidation.label('productId')
 });
 
 const completOrderSchema = Joi.array().items(completeOrderValidations);

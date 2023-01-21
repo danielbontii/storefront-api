@@ -108,7 +108,7 @@ fdescribe('OrderStore should', () => {
 
     const orderToComplete = {
       orderId: compOrder.id,
-      productId: product.id,
+      // productId: product.id,
       userId: user.id
     };
     const completedOrder = (await OrderStore.completeUserOrder(
@@ -126,31 +126,6 @@ fdescribe('OrderStore should', () => {
       createdAt: completedOrder.createdAt,
       completedAt: completedOrder.completedAt
     });
-  });
-
-  it('should show active orders by user', async () => {
-    const activeUser = await UserStore.create({
-      firstName: 'John',
-      lastName: 'Johnson',
-      password: 'JohnDo$123'
-    });
-
-    const activeProduct = await ProductStore.create({
-      name: 'Active Product',
-      price: '200',
-      category: 'General purpose'
-    });
-
-    const orderFour = {
-      userId: activeUser.id,
-      products: [{ productId: activeProduct.id, quantity: 5 }]
-    };
-
-    const activeOrder = (await OrderStore.create(orderFour)) as Order;
-
-    expect(await OrderStore.currentOrdersByUser(activeUser.id)).toEqual([
-      activeOrder
-    ]);
   });
 
   it('should complete multiple orders', async () => {
@@ -210,6 +185,31 @@ fdescribe('OrderStore should', () => {
         createdAt: completedOrders[1].createdAt,
         completedAt: completedOrders[1].completedAt
       }
+    ]);
+  });
+
+  it('should show active orders by user', async () => {
+    const activeUser = await UserStore.create({
+      firstName: 'John',
+      lastName: 'Johnson',
+      password: 'JohnDo$123'
+    });
+
+    const activeProduct = await ProductStore.create({
+      name: 'Active Product',
+      price: '200',
+      category: 'General purpose'
+    });
+
+    const orderFour = {
+      userId: activeUser.id,
+      products: [{ productId: activeProduct.id, quantity: 5 }]
+    };
+
+    const activeOrder = (await OrderStore.create(orderFour)) as Order;
+
+    expect(await OrderStore.currentOrdersByUser(activeUser.id)).toEqual([
+      activeOrder
     ]);
   });
 

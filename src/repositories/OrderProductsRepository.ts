@@ -27,4 +27,12 @@ export class OrderProductsRepository {
     conn.release();
     return saved;
   }
+
+  static async findByOrderId(orderId: string): Promise<SavedOrderedProduct[]> {
+    const conn = await client.connect();
+    const sql = 'SELECT * FROM order_products WHERE order_id = ($1)';
+    const result:QueryResult<SavedOrderedProduct> = await conn.query(sql, [orderId]);
+    conn.release();
+    return result.rows;
+  }
 }
