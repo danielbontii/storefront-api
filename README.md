@@ -19,13 +19,22 @@ This is an ecommerce API through which users can be able to browse an index of a
 Rename .env .example to .env and fill all values.
 
 Run `docker-compose up -d --build` in your terminal. You will need to install [docker](https://docs.docker.com/engine/install/) if you haven't. 
+
+The port on which the development database runs is the value specified in .env as DEV_DB_PORT. Use the credentials DEV_DB_USER and DEV_DB_PASS specified in the .env file to login to the development database.
+
+The port on which the testing database runs value specified in .env as TEST_DB_PORT. Use the credentials TEST_DB_USER and TEST_DB_PASS specified in the .env file to login to the test database.
+
+Both the test and development databases are automatically created when you build the docker image.
+
 Alternatively, you can install [postgresql](https://www.postgresql.org/download/) and setup the database on your machine. This way you won't have to use `docker-compose` to connect to the database;
+
+If you use a local postgresql server on your machine, you will have to create two databases with the same names for the TEST_DB and DEV_DB values specified in the .env file with usernames and passwords matching TEST_DB_USER, TEST_DB_PASS for test and DEV_DB_USER, DEV_DB_PASS for development.
 
 Caveat:
 
 Docker only initalizes the database once on the first build. If you change your database credentials after the first build, the old credentials will still apply. You will have to remove the volume and rebuild the image. One possible solution is to stop the running container, use `docker volume prune` to remove the old unassociated volume and rebuild the image.
 
-Start the server with any of the start scripts below
+Start the server with any of the start scripts below. The server port is the value set DEV_SERVER_PORT when NODE_ENV is set to dev and TESTS_SERVER_PORT when NODE_ENV is set to test. If NODE_ENV is not specified, the server port defaults to 5000. 
 ### Scripts
 - yarn / yarn install: install the required packages
 - yarn run start: compile the code and start the server with javascript code
@@ -56,4 +65,4 @@ API base route: /storefront/api/v1
 | /orders/:userId/complete |  GET | returns completed orders by userId |
 | /orders/:userId/active |  GET | returns active orders by userId |
 
-See <a href="https://documenter.getpostman.com/view/19061740/2s8Z76wUwr#fc915d21-0fa5-4fc8-a8d5-4388b36ac118">postman documentation</a>
+See <a href="https://documenter.getpostman.com/view/19061740/2s8Z76wUwr#fc915d21-0fa5-4fc8-a8d5-4388b36ac118" target="_blank">postman documentation</a>
