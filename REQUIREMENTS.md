@@ -4,48 +4,6 @@ The company stakeholders want to create an online storefront to showcase their g
 These are the notes from a meeting with the frontend developer that describe what endpoints the API needs to supply, as well as data shapes the frontend and backend have agreed meet the requirements of the application. 
 
 ## API Endpoints
-#### Products
-- Index 
-- Show
-- Create [token required]
-- [OPTIONAL] Top 5 most popular products 
-- [OPTIONAL] Products by category (args: product category)
-
-#### Users
-- Index [token required]
-- Show [token required]
-- Create N[token required] 
-
-#### Orders
-- Current Order by user (args: user id)[token required]
-- [OPTIONAL] Completed Orders by user (args: user id)[token required]
-
-## Data Shapes
-#### Product
--  id
-- name
-- price
-- [OPTIONAL] category
-
-#### User
-- id
-- firstName
-- lastName
-- password
-
-#### Category
-- id
-- name
-
-#### Orders
-- id
-- id of each product in the order
-- quantity of each product in the order
-- user_id
-- status of order (active or complete)
-
-## Routes 
-
 ### Product Routes
 '/products'  [GET] 
 
@@ -79,3 +37,32 @@ These are the notes from a meeting with the frontend developer that describe wha
 ### Auth routes
 '/auth/?password' [GET]
 
+## Data Shapes
+#### Product
+- id [UUID]
+- product_name [VARCHAR]
+- price [NUMERIC]
+- category_id [INTEGER]
+
+#### User
+- id [UUID]
+- first_name [VARCHAR]
+- last_name [VARCHAR]
+- password_digest [VARCHAR]
+
+#### Category
+- id [INTEGER]
+- category_name [VARCHAR]
+
+#### Orders
+- id [UUID]
+- user_id [UUID]
+- status [VARCHAR]
+- created_at [TIMESTAMP]
+- completed_at [TIMESTAMP]
+
+### Orders_Products
+- id [UUID]
+- product_id [UUID]
+- order_id [UUID]
+- quantity [INTEGER]
